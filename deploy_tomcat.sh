@@ -1,0 +1,36 @@
+#!/bin/bash
+
+PROJ_CODE=$1
+TOMCAT_SEQ=$2
+PROJ_PKG=$3
+
+WEB_PORT="${PROJ_CODE}${TOMCAT_SEQ}0"
+SSL_PORT="${PROJ_CODE}${TOMCAT_SEQ}3"
+SHUTDOWN_PORT="${PROJ_CODE}${TOMCAT_SEQ}5"
+JMX_PORT="${PROJ_CODE}${TOMCAT_SEQ}8"
+APACHE_PORT="${PROJ_CODE}${TOMCAT_SEQ}9"
+
+TOMCAT_PKG="/gotwo_data/scripts/template/tomcat"
+DEST_TOMCAT_DIR="/gotwo_data/Application/tomcat${WEB_PORT}"
+CATA_TEMPLATE="${DEST_TOMCAT_DIR}/bin/catalina.sh"
+XML_TEMPLATE="${DEST_TOMCAT_DIR}/conf/server.xml"
+
+#echo $DEST_TOMCAT_DIR
+#echo $CATA_TEMPLATE
+#echo $XML_TEMPLATE
+
+cp -r $TOMCAT_PKG $DEST_TOMCAT_DIR
+
+sed -i "s/##WEB_PORT##/${WEB_PORT}/g" $XML_TEMPLATE
+sed -i "s/##SSL_PORT##/${SSL_PORT}/g" $XML_TEMPLATE
+sed -i "s/##SHUTDOWN_PORT##/${SHUTDOWN_PORT}/g" $XML_TEMPLATE
+
+sed -i "s/##WEB_PORT##/${WEB_PORT}/g" $CATA_TEMPLATE
+sed -i "s/##JMX_PORT##/${JMX_PORT}/g" $CATA_TEMPLATE
+
+rm -rf ${DEST_TOMCAT_DIR}/webapps/*
+cp $PROJ_PKG ${DEST_TOMCAT_DIR}/webapps/ROOT.war
+
+chown -R tomcat.tomcat $DEST_TOMCAT_DIR
+
+ 

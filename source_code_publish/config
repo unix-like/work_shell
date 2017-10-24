@@ -1,0 +1,13 @@
+##### source code & production path #####
+# go2 plus
+plus_scp="/gotwo_data/probject_code/go2.cn"
+plus_pp="/gotwo_data/sites/go2.cn/www.go2.cn"
+# go2 strength
+slzz_scp="/gotwo_data/probject_code/z.go2.cn"
+slzz_pp="/gotwo_data/sites/go2.cn/z.go2.cn"
+# go2 supplier plus
+supplier_scp="/gotwo_data/probject_code/supplier_go2"
+supplier_pp="/gotwo_data/sites/go2.cn/supplier.go2.cn"
+
+# git branch
+git_branch="master"

@@ -1,0 +1,5 @@
+application/controllers/django/welcome.php
+application/templates/django/welcome/index.html
+application/models/django/coupon_model.php
+application/controllers/django/coupon.php
+application/templates/django/coupon/index.html

@@ -1,0 +1,102 @@
+#!/bin/bash -
+
+set -e
+
+. ./config
+#. /gotwo_data/scripts/source_code_publish/config
+
+read -p "请输入要发布的项目(plus|slzz|supplier): " object
+
+case $object in
+    plus)
+        SOURCE=$plus_scp
+        PROD_PATH=$plus_pp
+        ;;
+    slzz)
+        SOURCE=$slzz_scp
+        PROD_PATH=$slzz_pp
+        ;;
+    supplier)
+        SOURCE=$supplier_scp
+        PROD_PATH=$supplier_pp
+        ;;
+    *)
+        echo "错误的参数"
+        exit
+        ;;
+esac
+
+pull_log_file="/tmp/publish_${object}_pull.log"
+
+echo "正在更新代码仓库..."
+su - appdeploy  -c "cd $SOURCE && git checkout $git_branch && git pull | tee $pull_log_file"
+
+set +e
+cat $pull_log_file | grep 'local_constants.php' > /dev/null
+if [ $? -eq 0 ]; then
+    printf "\e[37;41m需要手动更新local_constants.php中的配置:\e[0m\n\n"
+    printf "\e[37;41m代码发布已停止！\e[0m\n\n"
+    # 删除git操作产生的临时文件
+#    rm -f $pull_log_file
+    exit
+fi
+set -e
+
+if [[ $# = 0 || ! $1 = '--force' ]]; then
+    set +e
+    #cat $pull_log_file | grep "已经是最新的。" > /dev/null
+    cat $pull_log_file | grep "Already up-to-date." > /dev/null
+    if [ $? -eq 0 ]; then
+	      printf "\e[37;43m代码无更新，代码发布结束!\e[0m\n\n"
+        # 删除git操作产生的临时文件
+#	      rm -f $pull_log_file
+	      exit
+    fi
+    set -e
+fi
+
+# 删除git操作产生的临时文件
+#rm -f $pull_log_file
+
+echo "正在备份代码..."
+day=`date "+%Y-%m-%d"`
+time=`date "+%H:%M:%S"`
+date="${day}_${time}"
+
+cd "$PROD_PATH"
+
+test -d "${PROD_PATH}/backup/${day}/${date}" || \
+    sudo mkdir -p "${PROD_PATH}/backup/${day}/${date}"
+
+sudo cp -r htdocs "${PROD_PATH}/backup/${day}/${date}/"
+sudo cp -r "$SOURCE" "${PROD_PATH}/htdocs.new"
+
+if [ $object = plus ]; then
+    sudo ln -s "${PROD_PATH}/upload" "${PROD_PATH}/htdocs.new/"
+fi
+
+cd "${PROD_PATH}/htdocs.new"
+if [ -d .git ]; then
+    sudo rm -rf .git
+fi
+
+if [ -f .gitignore ]; then
+    sudo rm -f .gitignore
+fi
+
+if [ -d support_files ]; then
+    sudo rm -rf support_files
+fi
+
+echo "正在替换生产环境代码..."
+cd "$PROD_PATH"
+sudo rm -rf htdocs
+sudo mv htdocs.new htdocs
+
+if [ -d "/tmp/templates_c" ]; then
+    echo "正在删除模板缓存文件..."
+    cd tmp/templates_c && sudo ls | xargs sudo rm -f
+fi
+
+printf "\e[37;42m代码发布结束！\e[0m\n\n"
+

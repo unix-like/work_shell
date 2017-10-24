@@ -1,0 +1,65 @@
+<configuration debug="false" scan="true" scanPeriod="60 seconds">
+
+  <property name="LOG_FOLDER" value="/gotwo_data/Application/tomcat43010/logs" />
+
+  <appender name="rollingDateAndSizeFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_FOLDER}/publish.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${LOG_FOLDER}/%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>[%-5level] %d{MM.dd HH:mm:ss} [%thread] %class.%M[%L]\n >> %msg%n</pattern>
+    </encoder>
+  </appender>
+
+
+  <!-- <property file="logback.properties" /> -->
+  <!-- %d{MM.dd HH:mm:ss} [%-5level] %thread %class{5}.%M[%L]\n >> %msg%n -->
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+
+    <encoder>
+      <pattern>[%-5level] %d{MM.dd HH:mm:ss} [%thread] %class.%M[%L]\n %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- singleFile <appender name="singleFle" class="ch.qos.logback.core.FileAppender"> <file>${LOG_FOLDER}/myApp.log</file> <append>true</append> 
+    <encoder> <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n </pattern> </encoder> </appender> -->
+
+  <!-- rollingDateFile <appender name="rollingDateFile" class="ch.qos.logback.core.rolling.RollingFileAppender"> <file>${LOG_FOLDER}/rollingDateFile.log</file> 
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <fileNamePattern>logFile.%d{yy-MM-dd}.log</fileNamePattern> keep 30 
+    days' worth of history <maxHistory>30</maxHistory> </rollingPolicy> <encoder> <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n </pattern> 
+    </encoder> </appender> -->
+  <!-- rollingSizeFile -->
+  <!-- <appender name="rollingSizeFile" class="ch.qos.logback.core.rolling.RollingFileAppender"> -->
+  <!-- <file>${LOG_FOLDER}/rollingSizeFile.log</file> -->
+  <!-- <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy"> -->
+  <!-- <fileNamePattern>myApp.%i.log.zip</fileNamePattern> -->
+  <!-- <minIndex>1</minIndex> -->
+  <!-- <maxIndex>3</maxIndex> -->
+  <!-- </rollingPolicy> -->
+  <!-- <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy"> -->
+  <!-- <maxFileSize>5MB</maxFileSize> -->
+  <!-- </triggeringPolicy> -->
+  <!-- <encoder> -->
+  <!-- <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n -->
+  <!-- </pattern> -->
+  <!-- </encoder> -->
+  <!-- </appender> -->
+
+
+  <!-- <logger name="com.gf" level="INFO"> -->
+  <!-- <appender-ref ref="rollingDateAndSizeFile" /> -->
+  <!-- </logger> -->
+
+  <!-- <logger name="com.gf2" level="OFF"> -->
+  <!-- </logger> -->
+
+  <!-- Strictly speaking, the level attribute is not necessary since -->
+  <!-- the level of the root level is set to DEBUG by default. -->
+  <root level="INFO">
+    <appender-ref ref="rollingDateAndSizeFile" />
+  </root>
+  <!-- levels: TRACE, DEBUG, INFO, WARN, ERROR, ALL OFF -->
+</configuration>

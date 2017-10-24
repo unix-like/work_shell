@@ -50,7 +50,7 @@ cat <<EOF
 |---------------------------------------------------------------------------------------------
 |jvm监控系统(observer)  | 192.168.10.37:16700 | 192.168.10.51:16710    |                     |
 |---------------------------------------------------------------------------------------------
-|2mm用户中心(mm2userCenter)          | usercenter.2mm.cn   | 192.168.10.51:26510    | 192.168.10.51:26520 |
+|2mm用户中心(mm2userCenter)废弃          | usercenter.2mm.cn   | 192.168.10.51:26510    | 192.168.10.51:26520 |
 |---------------------------------------------------------------------------------------------
 |微信(weixinmgt)        | wx.go2.cn           | 192.168.10.51:36100    |                     |
 |---------------------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ WAR_FILE="lastSuccessfulBuild/artifact/build/libs/workspace-2.0.war"
 
 
 case $PACKAGE in
-        navigate|navigate_go2|photography|product2tag|behavior|userTask|mmuserCenter|sitemapmgt|producer|datamgt|uploadserver|helpmgt)
+        navigate|navigate_go2|photography|product2tag|behavior|userTask|mmuserCenter|sitemapmgt|producer|datamgt|uploadserver|helpmgt|cachemgt)
         echo "wget ${BASE_URL}/${PACKAGE}"_production/"${WAR_FILE}"
         wget ${BASE_URL}/${PACKAGE}"_production/"${WAR_FILE}
         scp -P 40001 $WORK_DIRECTORY/workspace-2.0.war $USER@$REMOTE_HOST_1:~/${PACKAGE}".war"	
@@ -134,7 +134,6 @@ case $PACKAGE in
         echo "wget ${BASE_URL}/${PACKAGE}"_production/"${WAR_FILE}"
         wget ${BASE_URL}/${PACKAGE}"_production/"${WAR_FILE}
         scp -P 40001 $WORK_DIRECTORY/workspace-2.0.war $USER@$REMOTE_HOST_3:~/${PACKAGE}".war"        
-        scp -P 40001 $WORK_DIRECTORY/workspace-2.0.war $USER@$REMOTE_HOST_6:~/${PACKAGE}".war"        
         ;;
 
         userCenter|admgt)
@@ -156,8 +155,6 @@ case $PACKAGE in
         publish)
         echo "wget ${BASE_URL}/${PACKAGE}"_production/"${WAR_FILE}"
         wget ${BASE_URL}/${PACKAGE}"_production/"${WAR_FILE}
-        scp -P 40001 $WORK_DIRECTORY/workspace-2.0.war $USER@$REMOTE_HOST_1:~/${PACKAGE}".war"        
-        scp -P 40001 $WORK_DIRECTORY/workspace-2.0.war $USER@$REMOTE_HOST_6:~/${PACKAGE}".war"        
         scp -P 40001 $WORK_DIRECTORY/workspace-2.0.war $USER@$REMOTE_HOST_8:~/${PACKAGE}".war"        
         ;;
 

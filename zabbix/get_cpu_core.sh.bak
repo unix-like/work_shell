@@ -1,0 +1,27 @@
+#!/bin/sh
+CORE_NUM=$1
+ITEM=$2
+
+case $ITEM in
+  idle)
+      sar -P ${CORE_NUM} 1 1 |grep "Average:"|awk '{print $8}'
+  ;;
+  steal)
+      sar -P ${CORE_NUM} 1 1 |grep "Average:"|awk '{print $7}'
+  ;;
+  iowait)
+      sar -P ${CORE_NUM} 1 1 |grep "Average:"|awk '{print $6}'
+  ;;
+  system)
+      sar -P ${CORE_NUM} 1 1 |grep "Average:"|awk '{print $5}'
+  ;;
+  nice)
+      sar -P ${CORE_NUM} 1 1 |grep "Average:"|awk '{print $4}'
+  ;;
+  user)
+      sar -P ${CORE_NUM} 1 1 |grep "Average:"|awk '{print $3}'
+  ;;
+  *)
+  exit
+esac
+

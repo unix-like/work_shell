@@ -1,0 +1,2 @@
+/gotwo_data/Application/tomcat#PORT#/conf/server.xml
+/gotwo_data/Application/tomcat#PORT#/webapps/ROOT/WEB-INF/classes/logback.xml
